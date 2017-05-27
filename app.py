@@ -12,15 +12,16 @@ db = connection['RTCONGRESS_DATA']
 secrets = utils.getSecretData()
 
 app = Flask(__name__)
+app.secret_key = secrets['APP_SECRET_KEY']
 
 #configure mail
 app.config['MAIL_SERVER'] ='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = secrets['email']
-app.config['MAIL_PASSWORD'] = secrets['email-password']
+app.config['MAIL_USERNAME'] = secrets['EMAIL_ADDRESS']
+app.config['MAIL_PASSWORD'] = secrets['EMAIL_PASSWORD']
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_DEFAULT_SENDER'] = ("StuyCS Code Review", secrets['email'])
+app.config['MAIL_DEFAULT_SENDER'] = ("RealTime Congress", secrets['EMAIL_ADDRESS'])
 
 #initialize mail
 mail = Mail(app)
@@ -39,9 +40,39 @@ def sendEmailAsync(app, message):
         mail.send(message)
 
 @app.route("/")
-def hello():
-    return "Hello, I love Digital Ocean!"
+def root():
+    if 'user' in session:
+        #user is logged in, we can send them to home:
+        return redirect( url_for("home") )
+    else:
+        if request.args:
+            if 'message' in request.args:
+                message = request.args['message']
+                return render_template("login.html", message = message)
+            else:
+                print request.args
+        return render_template("login.html")
 
+@app.route("/authen", methods=['POST'])
+def authen():
+    if request.args:
+        #check whether we're logging in or signing up
+        if 'authen' in request.args:
+            if request.args['authen'] == 'login':
+                pass
+            elif request.args['authen'] == 'signup':
+                pass
+            else:
+                return "invalid authen arg"
+        else:
+            return "authen arg not found"
+    else:
+        return "No args found"
+
+@app.route("/home")
+def home():
+    if utils.validate():
+        return render_template("home.html")
 
 
 

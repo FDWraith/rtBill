@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block Title %}Base{% endblock %}</title>
+    <!-- Insert CSS Files HERE -->
+  </head>
+  <body>
+    {% if verified == True %}
+    {% block content %}{% endblock %}
+    {% else %}
+    <center>
+      <h1>Please Verify Your Account</h1>
+      <a href="/resend">Resend Verification Link</a>
+    </center>
+    {% endif %}
+  </body>
+</html>

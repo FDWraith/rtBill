@@ -16,6 +16,15 @@ def getVerificationLink():
     else:
         return link
 
+def checkVerification(email, link):
+    if db.users.find_one( {'email': email} )['verificationLink'] == link:
+        db.users.update(
+            {'email': email},
+            {'$set':
+             {'verified':True}
+            })
+        return True
+    return False
 def createUser(email, pwd, name):
     if checkEmail( email ):
         db.users.insert_one(

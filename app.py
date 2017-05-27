@@ -99,10 +99,12 @@ def home():
         return render_template("home.html", verified = session['verified'] )
 
 
-
 @app.route("/verify/<verificationLink>")
 def verify(verificationLink):
-    pass
+    if accounts.checkVerification( session['user'], verificationLink ):
+        session['verified'] = True
+    return redirect( url_for('home') )
+    
 
 if __name__ == "__main__":
     app.debug = True

@@ -8,6 +8,7 @@ def getSecretData():
             'EMAIL_ADDRESS': info[1],
             'EMAIL_PASSWORD': info[2],
             'PROJECT_URL': info[3]
+            'MONGO_URL': info[4]
         }
         return secretsDict
 

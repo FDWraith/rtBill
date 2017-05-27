@@ -1,18 +1,21 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 from pymongo import MongoClient
-from utils import utils
+from utils import utils, accounts
 import os
-
-#connect to Mongo
-connection = MongoClient("127.0.0.1")
-db = connection['RTCONGRESS_DATA']
 
 #get data from secrets.txt
 secrets = utils.getSecretData()
 
 app = Flask(__name__)
 app.secret_key = secrets['APP_SECRET_KEY']
+
+URL = secrets['PROJECT_URL']
+MONGO_URL = '127.0.0.1'
+
+#connect to Mongo
+connection = MongoClient(MONGO_URL)
+db = connection['RTCONGRESS_DATA']
 
 #configure mail
 app.config['MAIL_SERVER'] ='smtp.gmail.com'
@@ -39,6 +42,21 @@ def sendEmailAsync(app, message):
     with app.app_context():
         mail.send(message)
 
+#Sends an email verification
+def sendVerificationEmail(email, verificationLink):
+    message = Message()
+    message.recipients = [ email ]
+    message.subject = "Confirm Your Real Time Congress Account"
+    message.html = '''
+    <center>
+<h1 style="font-weight: 500 ; font-family: Arial">Real Time Congress</h1>
+    <p style="font-weight: 500 ; font-family: Arial">Thanks for signing up for Real Time Congress! Please press the button below to verify your account.</p>
+    <br><br>
+    <a href="{0}" style="padding: 1.5% ; text-decoration: none ; color: #404040; border: 1px solid black ; text-transform: uppercase ; font-weight: 500 ; font-family: Arial ; padding-left: 10% ; padding-right: 10%">Verify Email</a>
+</center>
+    '''.format("%s/verify/%s"%(URL, verificationLink) )
+    sendEmailAsync(app, message)
+        
 @app.route("/")
 def root():
     if 'user' in session:
@@ -59,9 +77,15 @@ def authen():
         #check whether we're logging in or signing up
         if 'authen' in request.args:
             if request.args['authen'] == 'login':
-                pass
+                with accounts.getUser( request.args['email'], request.args['password'] ) as user: 
+                    if user:
+                        session['user'] = user['email']
+                        session['verified'] = user['verified']
+                        return True
+                    else:
+                        return False                    
             elif request.args['authen'] == 'signup':
-                pass
+                return accounts.createUser( request.args['email'], request.args['password'], request.args['name'])
             else:
                 return "invalid authen arg"
         else:
@@ -72,10 +96,13 @@ def authen():
 @app.route("/home")
 def home():
     if utils.validate():
-        return render_template("home.html")
+        return render_template("home.html", verified = session['verified'] )
 
 
 
+@app.route("/verify/<verificationLink>")
+def verify(verificationLink):
+    pass
 
 if __name__ == "__main__":
     app.debug = True

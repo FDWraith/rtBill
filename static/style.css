@@ -1,0 +1,171 @@
+letter-spacing: @font-face {
+  font-family: Steelfish;
+  src: url("steelfish rg.ttf");
+}
+
+h6 {
+  font-family: Steelfish;
+}
+
+.steel{
+  font-family: Steelfish;
+  font-weight:bold !important;
+  font-size: 60px !important;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  /*color: white;*/
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+h1 {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 26px;
+    /* color:white !important; */
+}
+
+h2 {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 26px;
+}
+
+h3 {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 15px;
+}
+
+p {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+pre {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+a.navbar-brand {
+  padding-top: 10px;
+  padding-left: 5vw;
+  float: left;
+}
+
+#myNavbar {
+    float: right;
+    padding-right: 5%;
+    background-color: #56b598 !important;
+}
+
+.navbar-default {
+    background-color: #56b598 !important;
+}
+
+#lyrics {
+    padding-top:50px;
+    padding-bottom: 50px;
+    height:auto;
+}
+
+#gifDiv {
+    padding-top:50px;
+    padding-bottom: 50px;
+    height:auto;
+}
+
+
+/*
+red: #c95d67
+green: #56b598
+
+pink: #ffa9c1;
+black
+*/
+
+
+#container {
+  height: 650px;
+  /*background: #1BB996;
+  background: -webkit-linear-gradient(#1BB996,#3C4240);
+  background: -o-linear-gradient(#1BB996,#3C4240);
+  background: -moz-linear-gradient(#1BB996,#3C4240);
+  background: linear-gradient(#1BB996,#3C4240);*/
+  margin: 0px auto;
+}
+
+/* --------- LOGO/HEADER/TITLE ---------*/
+h1 {
+  margin: 20px 0 0 20px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: #fff;
+}
+.bolder {
+  font-weight: 900;
+}
+/* --------- */
+
+/* --------- INPUT --------- */
+textarea.user {
+  width: 700px;
+  height: 50px;
+  color:black;
+  background: rgba(255,255,255,0.93);
+  border: 1px black solid;
+  font-family: 'Open Sans', sans-serif;
+  font-size:30px;
+  padding-left:15px;
+  text-align: center;
+}
+
+/* --------- */
+
+/* --------- SUBMIT --------- */
+#button {
+ transition-property: background, color;
+ color: #fff;
+ cursor: pointer;
+ transition-duration: 0.5s;
+ transition-timing-function: linear;
+ background: #ffa9c1;
+ border: 1px solid #ffa9c1;
+ /*border-radius: 15px;*/
+ font-size: 17px;
+ padding: 7px 12px;
+ font-weight: normal;
+
+ display: inline-block;
+ text-decoration: none;
+ font-family: 'Open Sans', sans-serif;
+ min-width: 100px;
+}
+#button:hover {
+  background: #fff;
+  background: rgba(255, 169, 201, 0.6); color: #fff; text-decoration-color: #8d9397
+}
+
+/* --------- */
+
+/* --------- LOGIN/REGISTER --------- */
+
+
+/* --------- */
+
+
+
+
+
+
+
+
+
+
+

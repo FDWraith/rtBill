@@ -1,0 +1,10 @@
+CONGRESS.GOV
+------------
+
+tan: #fcfcf5
+title blue: #274a6d
+title red: #8d2824
+
+darker blue (mine): #9ba1af
+dark blue: #a6acbb
+light blue-gray: #e5e5e5

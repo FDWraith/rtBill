@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_mail import Mail, Message
 from pymongo import MongoClient
-from utils import utils, accounts
+from utils import utils, accounts, propublica
 import os
 
 #get data from secrets.txt

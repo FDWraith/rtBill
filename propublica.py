@@ -24,7 +24,8 @@ def recentBills(congress, chamber, type):
 	url += str(type)
 	d = requests.get(url, headers=headers).json()
 
-	DICT = {}
+	LIST = [ bill['number'] for bill in d['results'][0]['bills'] ]
+        return LIST
 
 '''===================================================================================='''
 # GET RECENT BILLS BY A SPECIFIC MEMBER
@@ -37,9 +38,12 @@ def recentBills(congress, chamber, type):
 # type | introduced or updated
 '''===================================================================================='''
 #specificMembersRecentBills("https://api.propublica.org/congress/v1/members/L000287/bills/introduced.json")
-def specificMembersRecentBills(endpoint):
+def specificMembersRecentBills(member_id, type):
+        url = "https://api.propublica.org/congress/v1/members/%s/bills/%s"%(member_id, type)
+        d = requests.get( url, headers=headers).json()
 
-
+        LIST = [ bill['number'] for bill in d['results'][0]['bills']]
+        return LIST
 
 '''===================================================================================='''
 # GET A SPECIFIC BILL
@@ -112,16 +116,19 @@ def specificBills(congress,billID):
 # type | subjects, amendments or related
 '''===================================================================================='''
 #subjectsForBills("https://api.propublica.org/congress/v1/114/bills/hr2393/subjects.json") 
-def subjectsForBills(endpoint):
+def relatedForBills(congress, billID):
+        url = "https://api.propublica.org/congress/v1/%s/bills/%s/related"%(congress, billID)
+        d = requests.get(url, headers=headers).json()
+        LIST = [ bill['bill'] for bill in d['results'][0]['related_bills']] 
+        return LIST
 
 
 
 
+#subjects = [ item['content'] for item in requests.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Flegislative-subject-terms%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20margin7%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
 
-
-subjects = [ item['content'] for item in requests.get("https://query.yahooapis.co/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Flegislative-subject-terms%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20margin7%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
-
-#print subjects
+#for subject in subjects:
+#        print subject
 
 '''
 def subjectsForBills(endpoint):

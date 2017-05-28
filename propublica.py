@@ -4,10 +4,12 @@ data = {"ip":"1.1.2.3"}
 headers = {"X-API-Key":"qom0aa5YNf4MYMfnleCIr6jCZMRcjAVW888qEM6b"}
 
 #BILLS
-def recentBills(endpoint):
-	d = requests.get(endpoint, headers=headers).json()
-	with open('recentBills.txt', 'w') as outfile:
-		json.dump(d, outfile)
+def recentBills(congress, chamber, type):
+	url = "https://api.propublica.org/congress/v1/"
+	url += str(congress)
+	url += "/bills/"
+	url += str(billID)
+	d = requests.get(url, headers=headers).json()
 
 def specificMembersRecentBills(endpoint):
 	d = requests.get(endpoint, headers=headers).json()
@@ -21,6 +23,50 @@ def specificBills(endpoint):
 		json.dump(d, outfile)
 '''
 
+
+
+def subjectsForBills(endpoint):
+	d = requests.get(endpoint, headers=headers).json()
+	with open('subjectsForBills.txt', 'w') as outfile:
+		json.dump(d, outfile)
+
+
+'''===================================================================================='''
+# GET RECENT BILLS
+
+# GET REQUEST: https://api.propublica.org/congress/v1/{congress}/{chamber}/bills/{type}.json
+
+# URL PARAMETERS 
+# --------------
+# congress | 105-115
+# chamber | house, senate or both (for passed only)
+# type | introduced, updated, passed or major
+'''===================================================================================='''
+#recentBills("https://api.propublica.org/congress/v1/115/house/bills/introduced.json")
+
+'''===================================================================================='''
+# GET RECENT BILLS BY A SPECIFIC MEMBER
+
+# GET REQUEST: https://api.propublica.org/congress/v1/members/{member-id}/bills/{type}.json
+
+# URL PARAMETERS 
+# --------------
+# member-id | The ID of the member to retrieve; it is assigned by the Biographical Directory of the United States Congress or can be retrieved from a member list request.
+# type | introduced or updated
+'''===================================================================================='''
+#specificMembersRecentBills("https://api.propublica.org/congress/v1/members/L000287/bills/introduced.json")
+
+
+'''===================================================================================='''
+# GET A SPECIFIC BILL
+
+# GET REQUEST: https://api.propublica.org/congress/v1/{congress}/bills/{bill-id}.json
+
+# URL PARAMETERS 
+# --------------
+# congress | 105-115
+# bill-id | ex: hr4881
+'''===================================================================================='''
 def specificBills(congress,billID):
 	url = "https://api.propublica.org/congress/v1/"
 	url += str(congress)
@@ -67,53 +113,7 @@ def specificBills(congress,billID):
 	DICT['total_yes'] = d['votes'][0]['total_yes']
 	DICT['total_no'] = d['votes'][0]['total_no']
 	DICT['api_url'] = d['votes'][0]['api_url']
-
-
 	return DICT
-
-def subjectsForBills(endpoint):
-	d = requests.get(endpoint, headers=headers).json()
-	with open('subjectsForBills.txt', 'w') as outfile:
-		json.dump(d, outfile)
-
-
-'''===================================================================================='''
-# GET RECENT BILLS
-
-# GET REQUEST: https://api.propublica.org/congress/v1/{congress}/{chamber}/bills/{type}.json
-
-# URL PARAMETERS 
-# --------------
-# congress | 105-115
-# chamber | house, senate or both (for passed only)
-# type | introduced, updated, passed or major
-'''===================================================================================='''
-#recentBills("https://api.propublica.org/congress/v1/115/house/bills/introduced.json")
-
-'''===================================================================================='''
-# GET RECENT BILLS BY A SPECIFIC MEMBER
-
-# GET REQUEST: https://api.propublica.org/congress/v1/members/{member-id}/bills/{type}.json
-
-# URL PARAMETERS 
-# --------------
-# member-id | The ID of the member to retrieve; it is assigned by the Biographical Directory of the United States Congress or can be retrieved from a member list request.
-# type | introduced or updated
-'''===================================================================================='''
-#specificMembersRecentBills("https://api.propublica.org/congress/v1/members/L000287/bills/introduced.json")
-
-
-'''===================================================================================='''
-# GET A SPECIFIC BILL
-
-# GET REQUEST: https://api.propublica.org/congress/v1/{congress}/bills/{bill-id}.json
-
-# URL PARAMETERS 
-# --------------
-# congress | 105-115
-# bill-id | ex: hr4881
-'''===================================================================================='''
-print specificBills(114,"hr2393","bill") 
 
 
 '''===================================================================================='''

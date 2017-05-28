@@ -12,8 +12,5 @@ def getSecretData():
         }
         return secretsDict
 
-def validate():
-    return 'user' and 'verified' in session
-
 def hash( value ):
     return hashlib.sha256(value).hexdigest()

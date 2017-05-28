@@ -113,7 +113,7 @@ def subjectsForBills(endpoint):
 # congress | 105-115
 # bill-id | ex: hr4881
 '''===================================================================================='''
-print specificBills(114,"hr2393","bill") 
+#print specificBills(114,"hr2393","bill") 
 
 
 '''===================================================================================='''
@@ -134,3 +134,6 @@ print specificBills(114,"hr2393","bill")
 
 
 
+#subjects = [ item['content'] for item in requests.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Flegislative-subject-terms%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20margin7%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
+
+#print subjects

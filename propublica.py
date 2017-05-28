@@ -95,15 +95,17 @@ def specificBills(congress,billID):
 	DICT['summary_short'] = d['results'][0]['summary_short']
 	DICT['actions_latest_datetime'] = d['results'][0]['actions'][0]['datetime']
 	DICT['actions_latest_description'] = d['results'][0]['actions'][0]['description']
-	DICT['chamber'] = d['results'][0]['votes'][0]['chamber']
-	DICT['date'] = d['results'][0]['votes'][0]['date']
-	DICT['time'] = d['results'][0]['votes'][0]['time']
-	DICT['roll_call'] = d['results'][0]['votes'][0]['roll_call']
-	DICT['question'] = d['results'][0]['votes'][0]['question']
-	DICT['total_yes'] = d['results'][0]['votes'][0]['total_yes']
-	DICT['total_no'] = d['results'][0]['votes'][0]['total_no']
-	DICT['api_url'] = d['results'][0]['votes'][0]['api_url']
-	return DICT
+        """
+        DICT['chamber'] = d['votes'][0]['chamber']
+	DICT['date'] = d['votes'][0]['date']
+	DICT['time'] = d['votes'][0]['time']
+	DICT['roll_call'] = d['votes'][0]['roll_call']
+	DICT['question'] = d['votes'][0]['question']
+	DICT['total_yes'] = d['votes'][0]['total_yes']
+	DICT['total_no'] = d['votes'][0]['total_no']
+	DICT['api_url'] = d['votes'][0]['api_url']
+	"""
+        return DICT
 
 '''===================================================================================='''
 # GET A SUBJECTS, AMENDMENTS AND RELATED BILLS FOR A SPECIFIC BILL
@@ -135,12 +137,25 @@ def subjectsForBills(congress, billID):
 #        print subject
 
 def hugeAddFunction():
-        for s in range(1279):
-                data = specificBills('115',)
-                db.bills.insert(
-                        
-                )
-        
+        for s in range(1201, 1279):
+                data = specificBills('115','s%s'%(s))
+                related = relatedForBills('115','s%s'%(s))
+                data['related_bills'] = related
+                db.bills.insert(data)
+                print "s%s added"%(s)
+        for hr in range(2700, 2761):
+                data = specificBills('115', 'hr%s'%(hr))
+                related = relatedForBills('115', 'hr%s'%(hr))
+                data['related_bills'] = related
+                db.bills.insert(data)
+                print "hr%s added"%(hr)
+        #Specific Bills
+        data = specificBills('115', 'hr1628')
+        related = relatedForBills('115','hr1628')
+        data['related_bills'] = related
+        db.bills.insert(data)
+
+#hugeAddFunction()
 '''
 def subjectsForBills(endpoint):
 	d = requests.get(endpoint, headers=headers).json()

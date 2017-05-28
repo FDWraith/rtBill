@@ -1,7 +1,11 @@
+from pymongo import MongoClient
 import requests, json
 endpoint = ""
 data = {"ip":"1.1.2.3"}
 headers = {"X-API-Key":"qom0aa5YNf4MYMfnleCIr6jCZMRcjAVW888qEM6b"}
+
+connection = MongoClient('127.0.0.1')
+db = connection['RT_CONGRESS_DATA']
 
 '''===================================================================================='''
 # GET RECENT BILLS
@@ -89,20 +93,17 @@ def specificBills(congress,billID):
 	DICT['house_passage_vote'] = d['results'][0]['house_passage_vote']
 	DICT['senate_passage_vote'] = d['results'][0]['senate_passage_vote']
 	DICT['summary_short'] = d['results'][0]['summary_short']
-
-	DICT['actions_latest_datetime'] = d['results'][0]['actions'][0][datetime]
-	DICT['actions_latest_description'] = d['results'][0]['actions'][0][description]
-
-	DICT['chamber'] = d['votes'][0]['chamber']
-	DICT['date'] = d['votes'][0]['date']
-	DICT['time'] = d['votes'][0]['time']
-	DICT['roll_call'] = d['votes'][0]['roll_call']
-	DICT['question'] = d['votes'][0]['question']
-	DICT['total_yes'] = d['votes'][0]['total_yes']
-	DICT['total_no'] = d['votes'][0]['total_no']
-	DICT['api_url'] = d['votes'][0]['api_url']
+	DICT['actions_latest_datetime'] = d['results'][0]['actions'][0]['datetime']
+	DICT['actions_latest_description'] = d['results'][0]['actions'][0]['description']
+	DICT['chamber'] = d['results'][0]['votes'][0]['chamber']
+	DICT['date'] = d['results'][0]['votes'][0]['date']
+	DICT['time'] = d['results'][0]['votes'][0]['time']
+	DICT['roll_call'] = d['results'][0]['votes'][0]['roll_call']
+	DICT['question'] = d['results'][0]['votes'][0]['question']
+	DICT['total_yes'] = d['results'][0]['votes'][0]['total_yes']
+	DICT['total_no'] = d['results'][0]['votes'][0]['total_no']
+	DICT['api_url'] = d['results'][0]['votes'][0]['api_url']
 	return DICT
-
 
 '''===================================================================================='''
 # GET A SUBJECTS, AMENDMENTS AND RELATED BILLS FOR A SPECIFIC BILL
@@ -119,17 +120,27 @@ def specificBills(congress,billID):
 def relatedForBills(congress, billID):
         url = "https://api.propublica.org/congress/v1/%s/bills/%s/related"%(congress, billID)
         d = requests.get(url, headers=headers).json()
-        LIST = [ bill['bill'] for bill in d['results'][0]['related_bills']] 
+        LIST = [ bill['bill'] for bill in d['results'][0]['related_bills'] ] 
         return LIST
 
+def subjectsForBills(congress, billID):
+        url = "https://api.propublica.org/congress/v1/%s/bills/%s/subjects"%(congress, billID)
+        d = requests.get(url, headers=headers).json()
+        LIST = [ subject['name'] for subject in d['results'][0]['subjects']]
+        return LIST
 
-
-
-#subjects = [ item['content'] for item in requests.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Flegislative-subject-terms%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20margin7%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
+#subjects = [ item['content'] for item in requests.get("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Fpolicyarea%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20little_margin%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
 
 #for subject in subjects:
 #        print subject
 
+def hugeAddFunction():
+        for s in range(1279):
+                data = specificBills('115',)
+                db.bills.insert(
+                        
+                )
+        
 '''
 def subjectsForBills(endpoint):
 	d = requests.get(endpoint, headers=headers).json()

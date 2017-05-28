@@ -14,8 +14,8 @@ URL = secrets['PROJECT_URL']
 MONGO_URL = '127.0.0.1'
 
 #connect to Mongo
-connection = MongoClient(MONGO_URL)
-db = connection['RTCONGRESS_DATA']
+connection = MongoClient('127.0.0.1')
+db = connection['RT_CONGRESS_DATA']
 
 #configure mail
 app.config['MAIL_SERVER'] ='smtp.gmail.com'
@@ -73,19 +73,25 @@ def root():
 
 @app.route("/authen", methods=['POST'])
 def authen():
-    if request.args:
+    if request.form:
         #check whether we're logging in or signing up
-        if 'authen' in request.args:
-            if request.args['authen'] == 'login':
-                with accounts.getUser( request.args['email'], request.args['password'] ) as user: 
+        if 'authen' in request.form:
+            if request.form['authen'] == 'login':
+                user = accounts.getUser( request.form['email'], request.form['password'] ) 
+                if user:
+                    session['user'] = user['email']
+                    session['verified'] = user['verified']
+                    return redirect(url_for("home"))
+                else:
+                    return "ERROR"                    
+            elif request.form['authen'] == 'signup':
+                if accounts.createUser( request.form['email'], request.form['password'], request.form['name']):
+                    user =  accounts.getUser( request.form['email'], request.form['password'] )
                     if user:
                         session['user'] = user['email']
                         session['verified'] = user['verified']
-                        return True
-                    else:
-                        return False                    
-            elif request.args['authen'] == 'signup':
-                return accounts.createUser( request.args['email'], request.args['password'], request.args['name'])
+                        return ""
+                return "ERROR"
             else:
                 return "invalid authen arg"
         else:
@@ -95,16 +101,25 @@ def authen():
 
 @app.route("/home")
 def home():
-    if utils.validate():
+    if validate():
         return render_template("home.html", verified = session['verified'] )
 
+
+@app.route("/logout")
+def logout():
+    session.pop('verified')
+    session.pop('user')
+    return redirect(url_for("root"))
 
 @app.route("/verify/<verificationLink>")
 def verify(verificationLink):
     if accounts.checkVerification( session['user'], verificationLink ):
         session['verified'] = True
     return redirect( url_for('home') )
-    
+
+
+def validate():
+    return 'user' and 'verified' in session
 
 if __name__ == "__main__":
     app.debug = True

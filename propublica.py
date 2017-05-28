@@ -3,34 +3,6 @@ endpoint = ""
 data = {"ip":"1.1.2.3"}
 headers = {"X-API-Key":"qom0aa5YNf4MYMfnleCIr6jCZMRcjAVW888qEM6b"}
 
-#BILLS
-def recentBills(congress, chamber, type):
-	url = "https://api.propublica.org/congress/v1/"
-	url += str(congress)
-	url += "/bills/"
-	url += str(billID)
-	d = requests.get(url, headers=headers).json()
-
-def specificMembersRecentBills(endpoint):
-	d = requests.get(endpoint, headers=headers).json()
-	with open('specMemRecentBills.txt', 'w') as outfile:
-		json.dump(d, outfile)
-
-'''
-def specificBills(endpoint):
-	d = requests.get(endpoint, headers=headers).json()
-	with open('specificBills.txt', 'w') as outfile:
-		json.dump(d, outfile)
-'''
-
-
-
-def subjectsForBills(endpoint):
-	d = requests.get(endpoint, headers=headers).json()
-	with open('subjectsForBills.txt', 'w') as outfile:
-		json.dump(d, outfile)
-
-
 '''===================================================================================='''
 # GET RECENT BILLS
 
@@ -43,6 +15,16 @@ def subjectsForBills(endpoint):
 # type | introduced, updated, passed or major
 '''===================================================================================='''
 #recentBills("https://api.propublica.org/congress/v1/115/house/bills/introduced.json")
+def recentBills(congress, chamber, type):
+	url = "https://api.propublica.org/congress/v1/"
+	url += str(congress)
+	url += "/"
+	url += str(chamber)
+	url += "/bills/"
+	url += str(type)
+	d = requests.get(url, headers=headers).json()
+
+	DICT = {}
 
 '''===================================================================================='''
 # GET RECENT BILLS BY A SPECIFIC MEMBER
@@ -55,6 +37,8 @@ def subjectsForBills(endpoint):
 # type | introduced or updated
 '''===================================================================================='''
 #specificMembersRecentBills("https://api.propublica.org/congress/v1/members/L000287/bills/introduced.json")
+def specificMembersRecentBills(endpoint):
+
 
 
 '''===================================================================================='''
@@ -128,9 +112,20 @@ def specificBills(congress,billID):
 # type | subjects, amendments or related
 '''===================================================================================='''
 #subjectsForBills("https://api.propublica.org/congress/v1/114/bills/hr2393/subjects.json") 
+def subjectsForBills(endpoint):
 
 
 
 
 
 
+subjects = [ item['content'] for item in requests.get("https://query.yahooapis.co/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.congress.gov%2Fbrowse%2Flegislative-subject-terms%2F115th-congress'%20and%20xpath%3D'%2F%2Ful%5Bcontains(%40class%2C%22plain%20margin7%22)%5D%2F%2Fli%5Bcontains(%40href%2C%22%22)%5D%2F*'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys").json()['query']['results']['a'] ]
+
+#print subjects
+
+'''
+def subjectsForBills(endpoint):
+	d = requests.get(endpoint, headers=headers).json()
+	with open('subjectsForBills.txt', 'w') as outfile:
+		json.dump(d, outfile)
+'''

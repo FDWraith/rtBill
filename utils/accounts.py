@@ -6,7 +6,8 @@ import utils
 secrets = utils.getSecretData()
 
 connection = MongoClient('127.0.0.1')
-db = connection['RTCONGRESS_DATA']
+db = connection['RT_CONGRESS_DATA']
+students = db['students']
 
 #generate VerificationLink for a User:
 def getVerificationLink():
@@ -27,7 +28,7 @@ def checkVerification(email, link):
     return False
 def createUser(email, pwd, name):
     if checkEmail( email ):
-        db.users.insert_one(
+        db.users.insert(
             {
                 'email': email,
                 'password': utils.hash(pwd),
@@ -45,19 +46,22 @@ def checkEmail( email ):
     return not db.users.find({'email':email})
 
 def authenticateUser(email, pwd):
-    with db.users.find_one( {'email': email } ) as result:
-        if result:
-            #user is found
-            if utils.hash(pwd) == result['password']:
-                return True
-            else:
-                return False
+    result =  db.users.find_one( {'email': email } )
+    if result:
+        #user is found
+        if utils.hash(pwd) == result['password']:
+            return True
         else:
-            #user is not found
+            print "pass is wrong"
             return False
+    else:
+        print result
+        #user is not found
+        print "user not found"
+        return False
 
 def getUser(email, pwd):
     if authenticateUser(email, pwd):
-        return db.user.find_one({'email':email})
+        return db.users.find_one({'email':email})
     else:
         return None

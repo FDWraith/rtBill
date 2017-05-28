@@ -12,7 +12,7 @@
   -->
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" type="text/css">
     <link href="../static/bootstrap.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="../static/flexslider.css" rel="stylesheet" >
@@ -35,18 +35,16 @@
                 <div class="col-md-8 col-md-offset-2 text-center inner">
                   <h1 class="animated fadeInDown steel" style="color:black"><b>REAL TIME CONGRESS</b></span></h1><br>
                   <p class="animated fadeInUp delay-05s" style="color:gray">Bringing users realtime updates on Congressional bills.</em></p>
+                  <p style="color:gray" id="message"></p>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 col-md-offset-3 text-center">
 
                   <!-- LOG IN --> 
-                  <form action = "/authenticate/" method = "POST">
-                     <p> Email <input type = "text" name = "email-log" required placeholder="Email"> </p>
-                     <p> Password <input type = "password" name = "password" required placeholder="Password"> </p>
-                     <input type = "submit" name="account" value= "Login" class="learn-more-btn" >
-                  </form>
-
+                     <p> Email <input type ="text" id="email-log" required placeholder="Email"> </p>
+                     <p> Password <input type="password" id="password-log" required placeholder="Password"> </p>
+                     <button class="learn-more-btn" id="login" type="submit">Login</button>
                   <p style = "color: black">
                   Don't have an account? Sign up here 
                   (jk i dont have a link to register lol i think thats related to js)
@@ -58,13 +56,10 @@
                   <p style = "color: black"> hide the register lol </p>
 
                   <!-- REGISTER --> 
-                  <form action = "/authenticate/" method = "POST">
-                    <p> Name <input type = "text" name = "name" required placeholder="Full Name"> </p>
-                     <p> Email <input type = "text" name = "email-reg" required placeholder="Email"> </p>
-                     <p> Password <input type = "password" name = "password" required placeholder="Password"> </p>
-                     <input type = "submit" name="account" value= "Register" class="learn-more-btn"> 
-                  </form>
-
+                    <p> Name <input type = "text" id="name-reg" required placeholder="Full Name"> </p>
+                     <p> Email <input type = "text" id="email-reg" required placeholder="Email"> </p>
+                     <p> Password <input type = "password" id="password-reg" required placeholder="Password"> </p>
+                     <button class="learn-more-btn" id="register" type="submit">Sign Up</button>
                   <p style = "color: black">
                   Have an account already? Login here (jk i dont have a link to login lol i think thats related to js)
                   </p>
@@ -103,6 +98,9 @@
 <script src="../static/jquery.easing.min.js"></script>
 <script src="../static/scrolling-nav.js"></script>
 
+<script src="../static/js/test.js">
+  
+</script>
 
 </body>
 
